@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="个人作品集网站 - 展示我的技能、项目和联系方式">
+    <title>郑觊蛟 | 后端开发者 & 架构设计师</title>
+    <!-- Google Fonts & Font Awesome 6 (免费CDN) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(145deg, #f8fafc 0%, #eef2f9 100%);
+            color: #0f172a;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* 通用部分间距 */
+        section {
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            letter-spacing: -0.02em;
+            position: relative;
+            display: inline-block;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 60%;
+            height: 4px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 4px;
+        }
+
+        /* 按钮与卡片样式 */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.8rem;
+            border-radius: 40px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        .btn-primary {
+            background: #0f172a;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+        .btn-primary:hover {
+            background: #1e293b;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px -12px rgba(0,0,0,0.2);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid #0f172a;
+            color: #0f172a;
+        }
+        .btn-outline:hover {
+            background: #0f172a;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Hero 区域 */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            padding: 2rem 0 4rem;
+        }
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .avatar {
+            display: inline-flex;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+        .avatar i {
+            font-size: 5.5rem;
+            color: #3b82f6;
+            background: rgba(59,130,246,0.1);
+            padding: 0.8rem;
+            border-radius: 50%;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 15px 35px -10px rgba(0,0,0,0.1);
+        }
+        .hero h1 {
+            font-size: 3.3rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #0f172a, #3b82f6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .hero .tagline {
+            font-size: 1.3rem;
+            color: #334155;
+            font-weight: 500;
+        }
+        .hero .desc {
+            font-size: 1.05rem;
+            color: #475569;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 1.2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 0.8rem;
+        }
+
+        /* 关于区域 */
+        .about-text {
+            background: white;
+            padding: 2rem 2rem;
+            border-radius: 32px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+            font-size: 1.05rem;
+            color: #1e293b;
+            line-height: 1.7;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+        .about-text p + p {
+            margin-top: 1rem;
+        }
+
+        /* 技能标签 */
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.9rem;
+            margin-top: 1rem;
+        }
+        .skill-tag {
+            background: white;
+            padding: 0.6rem 1.3rem;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+            color: #0f172a;
+        }
+        .skill-tag:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+            background: #f1f5f9;
+        }
+
+        /* 项目卡片 Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        .project-card {
+            background: white;
+            border-radius: 28px;
+            padding: 1.6rem;
+            transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+            border: 1px solid #eef2ff;
+        }
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 35px -12px rgba(0,0,0,0.12);
+            border-color: #cbd5e1;
+        }
+        .project-icon {
+            font-size: 2.3rem;
+            color: #3b82f6;
+            margin-bottom: 1rem;
+        }
+        .project-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.7rem;
+            font-weight: 700;
+        }
+        .project-card p {
+            color: #475569;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0 1.2rem;
+        }
+        .project-tech span {
+            background: #eef2ff;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #1e40af;
+        }
+        .card-link {
+            text-decoration: none;
+            font-weight: 600;
+            color: #0f172a;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: gap 0.2s;
+        }
+        .card-link:hover {
+            gap: 12px;
+            color: #3b82f6;
+        }
+
+        /* 联系区域 */
+        .contact-wrapper {
+            background: white;
+            border-radius: 32px;
+            padding: 2.5rem;
+            text-align: center;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+        .contact-email {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #f1f5f9;
+            padding: 0.9rem 2rem;
+            border-radius: 60px;
+            font-size: 1.1rem;
+            margin: 1.5rem 0;
+            text-decoration: none;
+            color: #0f172a;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .contact-email i {
+            color: #3b82f6;
+            font-size: 1.2rem;
+        }
+        .contact-email:hover {
+            background: #e2e8f0;
+            transform: scale(1.02);
+        }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        .social-links a {
+            background: #f1f5f9;
+            width: 48px;
+            height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 60px;
+            font-size: 1.5rem;
+            color: #334155;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .social-links a:hover {
+            background: #0f172a;
+            color: white;
+            transform: translateY(-4px);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid #e2e8f0;
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-top: 2rem;
+        }
+
+        /* 返回顶部按钮 */
+        .go-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #0f172a;
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 99;
+            border: none;
+            font-size: 1.3rem;
+        }
+        .go-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .go-top:hover {
+            background: #3b82f6;
+            transform: translateY(-3px);
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1.5rem;
+            }
+            section {
+                padding: 3.5rem 0;
+            }
+            .hero h1 {
+                font-size: 2.4rem;
+            }
+            .tagline {
+                font-size: 1.1rem;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .contact-wrapper {
+                padding: 1.8rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .hero-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .btn {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Hero 主视觉区域 -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="avatar">
+                    <i class="fas fa-user-astronaut"></i>
+                </div>
+                <h1>郑觊蛟 · Jijiao Zheng</h1>
+                <div class="tagline">
+                    <i class="fas fa-code"></i> 后端开发者 & 架构设计师
+                </div>
+                <p class="desc">
+                    热衷于构建优雅、高性能的Java代码。15年+ 编程实战经验，擅长现代服务端技术栈，
+                    善于将设计灵感转化为交互式、用户体验友好的应用系统。
+                </p>
+                <div class="hero-buttons">
+                    <a href="#projects" class="btn btn-primary"><i class="fas fa-arrow-down"></i> 查看项目</a>
+                    <a href="#contact" class="btn btn-outline"><i class="fas fa-paper-plane"></i> 联系我</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 关于我 区域 -->
+        <section id="about">
+            <h2 class="section-title">关于我</h2>
+            <div class="about-text">
+                <p>👋 你好！我是郑觊蛟，一名对细节有执念的后端工程师，现居北京。我相信代码不仅是工具，更是创造数字体验的艺术。从设计系统到性能优化，我热衷于将复杂需求转化为简洁、直观的系统。</p>
+                <p>🎯 我的工作流涵盖全栈视野，但更专注于后端生态：Java、Springboot、Mysql 以及现代Java主流框架。除此之外，我喜欢分享技术文章、参与开源项目，以及探索AI相关领域发展。</p>
+                <p>✨ 业余时间，我热爱旅游、摩托车，并持续通过 side project 来实验新鲜技术。相信开放与协作能让技术变得更有趣。</p>
+            </div>
+        </section>
+
+        <!-- 专业技能 区域 -->
+        <section id="skills">
+            <h2 class="section-title">专业技能</h2>
+            <div class="skills-grid">
+                <span class="skill-tag">Java</span>
+                <span class="skill-tag">Mysql</span>
+                <span class="skill-tag">Redis</span>
+                <span class="skill-tag">RabbitMQ</span>
+                <span class="skill-tag">Springboot</span>
+                <span class="skill-tag">系统分布式部署</span>
+                <span class="skill-tag">Git & GitHub</span>
+                <span class="skill-tag">跨团队高效协作</span>
+                <span class="skill-tag">交互式设计</span>
+                <span class="skill-tag">系统性能优化</span>
+            </div>
+        </section>
+
+        <!-- 项目展示 区域 -->
+        <section id="projects">
+            <h2 class="section-title">精选项目</h2>
+            <div class="projects-grid">
+                <!-- 项目卡片 1 -->
+                <div class="project-card">
+                    <div class="project-icon"><i class="fas fa-cloud-sun"></i></div>
+                    <h3>支付结算平台</h3>
+                    <p>基于Java和Springboot的第三方支付平台及针对支付款项进行的商家清结算平台。</p>
+                    <div class="project-tech">
+                        <span>Java</span>
+                        <span>Redis</span>
+						<span>Mysql</span>
+                        <span>Springboot</span>
+                    </div>
+                    <a href="#" class="card-link">了解更多 <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <!-- 项目卡片 2 -->
+                <div class="project-card">
+                    <div class="project-icon"><i class="fas fa-store"></i></div>
+                    <h3>商城电商订单系统</h3>
+                    <p>现代化购物平台，实现商品筛选、购物车状态管理、响应式布局及暗色模式切换。</p>
+                    <div class="project-tech">
+                        <span>Java</span>
+                        <span>Redis</span>
+						<span>Mysql</span>
+                        <span>Springboot</span>
+                    </div>
+                    <a href="#" class="card-link">查看案例 <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <!-- 项目卡片 3 -->
+                <div class="project-card">
+                    <div class="project-icon"><i class="fas fa-blog"></i></div>
+                    <h3>个人博客平台</h3>
+                    <p>全栈个人博客系统，支持Markdown发布、评论互动和SEO优化，基于Next.js + MongoDB。</p>
+                    <div class="project-tech">
+                        <span>Next.js</span>
+                        <span>TailwindCSS</span>
+                        <span>MongoDB</span>
+                    </div>
+                    <a href="#" class="card-link">源码预览 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 联系与社交 区域 -->
+        <section id="contact">
+            <h2 class="section-title">保持连接</h2>
+            <div class="contact-wrapper">
+                <i class="fas fa-envelope-open-text" style="font-size: 2rem; color:#3b82f6;"></i>
+                <p style="margin: 0.5rem 0 0; font-weight: 500;">欢迎交流合作或单纯打个招呼</p>
+                <a href="mailto:ming.chen@example.com" class="contact-email">
+                    <i class="fas fa-envelope"></i> zhengjijiao.student@sina.com
+                </a>
+                <div class="social-links">
+                    <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Dribbble"><i class="fab fa-dribbble"></i></a>
+                </div>
+                <p style="margin-top: 1.5rem; font-size: 0.8rem; color: #5b6e8c;">
+                    <i class="fas fa-map-marker-alt"></i> 北京 / 远程 · 开放创意机会
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2025 郑觊蛟 | 用 ❤️ 构建的极简空间 — 所有项目均为概念展示，欢迎交流</p>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button class="go-top" id="goTopBtn" aria-label="回到顶部">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script>
+        (function() {
+            // 返回顶部逻辑: 滚动监听显示/隐藏按钮
+            const goTopBtn = document.getElementById('goTopBtn');
+            if (goTopBtn) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 400) {
+                        goTopBtn.classList.add('show');
+                    } else {
+                        goTopBtn.classList.remove('show');
+                    }
+                });
+                goTopBtn.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+
+            // 给所有带有hash锚点的内部链接添加平滑滚动 (防止默认行为，但原生scroll-behavior已支持，这里额外增加兼容)
+            const allLinks = document.querySelectorAll('a[href^="#"]');
+            allLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId === "#" || targetId === "") return;
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        e.preventDefault();
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        // 可选更新url hash而不跳跃 (优化)
+                        history.pushState(null, null, targetId);
+                    }
+                });
+            });
+
+            // 简单的动态问候（控制台彩蛋）
+            console.log("%c✨ 欢迎来到郑觊蛟的个人空间 ✨", "color: #3b82f6; font-size: 16px; font-weight: bold;");
+        })();
+    </script>
+</body>
+</html>
